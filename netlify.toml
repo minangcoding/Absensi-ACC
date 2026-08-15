@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# React Router pakai client-side routing — tanpa ini, refresh/akses langsung
+# ke URL selain "/" (mis. /admin/users) akan 404 di Netlify karena file
+# fisiknya memang tidak ada, semua rute harus jatuh ke index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

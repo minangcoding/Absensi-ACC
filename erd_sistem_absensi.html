@@ -1,0 +1,107 @@
+<style>
+#erd svg.erDiagram .divider path { stroke-opacity: 0.5; }
+#erd svg.erDiagram .row-rect-odd path,
+#erd svg.erDiagram .row-rect-odd rect,
+#erd svg.erDiagram .row-rect-even path,
+#erd svg.erDiagram .row-rect-even rect { stroke: none !important; }
+</style>
+<div id="erd"></div>
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: '"anthropic-sans", sans-serif',
+  themeVariables: {
+    darkMode: dark,
+    fontSize: '13px',
+    fontFamily: '"anthropic-sans", sans-serif',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+  },
+});
+const { svg } = await mermaid.render('erd-svg', `erDiagram
+  USERS ||--o{ ATTENDANCES : melakukan
+  USERS ||--o{ LEAVE_REQUESTS : mengajukan
+  USERS ||--o{ NOTIFICATIONS : menerima
+  USERS ||--o{ AUDIT_LOGS : mencatat
+  USERS }o--|| USERS : disupervisi
+  OFFICES ||--o{ ATTENDANCES : lokasi
+  USERS {
+    int id PK
+    string nama
+    string email
+    string role
+    string divisi
+    int supervisor_id FK
+  }
+  OFFICES {
+    int id PK
+    string nama_kantor
+    decimal latitude
+    decimal longitude
+    int radius_meter
+  }
+  WORK_SCHEDULES {
+    int id PK
+    string nama_shift
+    time jam_masuk
+    time jam_pulang
+  }
+  ATTENDANCES {
+    int id PK
+    int user_id FK
+    int office_id FK
+    date tanggal
+    timestamp jam_masuk
+    timestamp jam_pulang
+    string status
+  }
+  LEAVE_REQUESTS {
+    int id PK
+    int user_id FK
+    string jenis
+    date tanggal_mulai
+    string status
+    int approved_by FK
+  }
+  NOTIFICATIONS {
+    int id PK
+    int user_id FK
+    string tipe
+    boolean is_read
+  }
+  AUDIT_LOGS {
+    int id PK
+    int admin_id FK
+    string aksi
+    string target_table
+  }`);
+document.getElementById('erd').innerHTML = svg;
+
+document.querySelectorAll('#erd svg.erDiagram .node').forEach(node => {
+  const firstPath = node.querySelector('path[d]');
+  if (!firstPath) return;
+  const d = firstPath.getAttribute('d');
+  const nums = d.match(/-?[\d.]+/g)?.map(Number);
+  if (!nums || nums.length < 8) return;
+  const xs = [nums[0], nums[2], nums[4], nums[6]];
+  const ys = [nums[1], nums[3], nums[5], nums[7]];
+  const x = Math.min(...xs), y = Math.min(...ys);
+  const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('x', x); rect.setAttribute('y', y);
+  rect.setAttribute('width', w); rect.setAttribute('height', h);
+  rect.setAttribute('rx', '8');
+  for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
+    if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
+  }
+  firstPath.replaceWith(rect);
+});
+
+document.querySelectorAll('#erd svg.erDiagram .row-rect-odd path, #erd svg.erDiagram .row-rect-even path').forEach(p => {
+  p.setAttribute('stroke', 'none');
+});
+</script>
