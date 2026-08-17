@@ -162,7 +162,7 @@ export function ManajemenUser() {
 
   const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(
     filteredUsers,
-    10,
+    5,
   );
 
   const exportTitle = `Daftar Karyawan${roleFilter !== "semua" ? ` - ${ROLE_LABEL[roleFilter]}` : ""}`;

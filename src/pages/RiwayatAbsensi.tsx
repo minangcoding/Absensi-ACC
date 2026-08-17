@@ -30,7 +30,7 @@ export function RiwayatAbsensi() {
 
   const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(
     historyQuery.data ?? [],
-    15,
+    5,
   );
 
   return (

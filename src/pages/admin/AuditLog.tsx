@@ -45,7 +45,7 @@ export function AuditLog() {
 
   const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(
     filteredLogs,
-    20,
+    5,
   );
 
   return (

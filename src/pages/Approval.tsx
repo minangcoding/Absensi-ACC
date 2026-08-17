@@ -62,7 +62,7 @@ export function Approval() {
     pageRows: decidedPageRows,
     totalItems: decidedTotal,
     pageSize: decidedPageSize,
-  } = usePagination(decided, 10);
+  } = usePagination(decided, 5);
 
   return (
     <AppShell title="Approval Izin">

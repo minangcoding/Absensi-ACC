@@ -92,7 +92,7 @@ export function Rekap() {
   const title = `Rekap Absensi ${startDate} s.d. ${endDate}`;
   // Export ambil reportRows yang sudah kefilter search (biar konsisten sama
   // yang kelihatan di layar) — pagination di bawah cuma buat tabel di layar.
-  const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(reportRows, 15);
+  const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(reportRows, 5);
 
   return (
     <AppShell title="Rekap & Export Laporan">

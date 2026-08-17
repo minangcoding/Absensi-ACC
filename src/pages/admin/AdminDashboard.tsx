@@ -66,7 +66,7 @@ export function AdminDashboard() {
   const sudahAbsen = users.filter((u) => attendanceByUserId.has(u.id)).length;
   const telat = (attendanceQuery.data ?? []).filter((a) => a.status === "telat").length;
   const belumAbsen = users.length - sudahAbsen;
-  const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(users, 10);
+  const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(users, 5);
 
   return (
     <AppShell title="Admin Dashboard">

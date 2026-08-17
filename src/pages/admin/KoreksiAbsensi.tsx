@@ -57,7 +57,7 @@ export function KoreksiAbsensi() {
 
   const { page, setPage, pageCount, pageRows, totalItems, pageSize } = usePagination(
     filteredRows,
-    15,
+    5,
   );
 
   const addMutation = useMutation({
