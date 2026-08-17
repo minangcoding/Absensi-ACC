@@ -1,12 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { Download, Eye, EyeOff, Loader2, Lock, Mail, TriangleAlert } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, TriangleAlert } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import { useInstallPrompt } from "@/hooks/useInstallPrompt";
+import { InstallButton } from "@/components/layout/InstallButton";
 
 export function Login() {
   const { session, profile, loading, signIn } = useAuth();
-  const { canInstall, promptInstall } = useInstallPrompt();
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -120,16 +119,9 @@ export function Login() {
             Lupa password?
           </Link>
 
-          {canInstall && (
-            <button
-              type="button"
-              onClick={() => void promptInstall()}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
-            >
-              <Download className="h-4 w-4" />
-              Install Aplikasi
-            </button>
-          )}
+          <div className="mt-4">
+            <InstallButton variant="primary" />
+          </div>
         </div>
       </div>
     </div>

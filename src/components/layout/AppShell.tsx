@@ -6,7 +6,6 @@ import {
   CheckSquare,
   ClipboardList,
   Clock,
-  Download,
   FileText,
   History,
   LayoutDashboard,
@@ -20,10 +19,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthProvider";
 import { NotificationBell } from "@/components/layout/NotificationBell";
+import { InstallButton } from "@/components/layout/InstallButton";
 import { initials } from "@/lib/format";
 import { ROLE_BADGE_COLOR, ROLE_LABEL } from "@/lib/roles";
 import { fetchApprovalQueue, fetchMyLeaveRequests } from "@/lib/leave";
-import { useInstallPrompt } from "@/hooks/useInstallPrompt";
 
 interface NavItem {
   to: string;
@@ -75,7 +74,6 @@ export function AppShell({ title, children }: { title: string; children?: ReactN
   const [mobileOpen, setMobileOpen] = useState(false);
   const navGroups = buildNavGroups(profile?.role);
   const isReviewer = profile?.role === "supervisor" || profile?.role === "hr";
-  const { canInstall, promptInstall } = useInstallPrompt();
 
   // Badge angka kecil di menu sidebar (bukan kartu terpisah di Dashboard,
   // biar informasinya nempel langsung ke menu yang relevan, gak dobel).
@@ -208,17 +206,8 @@ export function AppShell({ title, children }: { title: string; children?: ReactN
             <Menu className="h-5 w-5" />
           </button>
           <h1 className="truncate text-base font-semibold text-slate-900">{title}</h1>
-          <div className="ml-auto flex items-center gap-2">
-            {canInstall && (
-              <button
-                type="button"
-                onClick={() => void promptInstall()}
-                className="hidden items-center gap-1.5 rounded-md border border-brand-200 bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700 hover:bg-brand-100 sm:inline-flex"
-              >
-                <Download className="h-4 w-4" />
-                Install App
-              </button>
-            )}
+          <div className="ml-auto flex items-center gap-3">
+            <InstallButton />
             <NotificationBell />
           </div>
         </header>

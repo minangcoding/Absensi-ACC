@@ -27,7 +27,17 @@ const KoreksiAbsensi = lazy(() =>
 );
 const AuditLog = lazy(() => import("@/pages/admin/AuditLog").then((m) => ({ default: m.AuditLog })));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Default React Query: staleTime 0 + refetchOnWindowFocus true berarti
+      // SEMUA query fetch ulang setiap kali tab balik fokus, walau baru aja
+      // dibuka — kerasa kayak halaman ke-refresh terus. Data dianggap masih
+      // fresh selama 30 detik, jadi gak double-fetch tiap gonta-ganti tab.
+      staleTime: 30_000,
+    },
+  },
+});
 
 function PageFallback() {
   return <div className="flex h-screen items-center justify-center text-slate-500">Memuat...</div>;
